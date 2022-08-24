@@ -12,15 +12,16 @@ llvm_map_components_to_libnames(llvm_all ${LLVM_TARGETS_TO_BUILD} Passes)
 llvm_map_components_to_libnames(llvm_options Option)
 
 add_library(PylirMain
-        PylirMain.cpp
         CommandLine.cpp
         Toolchain.cpp
         MinGWToolchain.cpp
         MSVCToolchain.cpp
         LinuxToolchain.cpp
+        DarwinToolchain.cpp
         Version.cpp
         Distro.cpp
-        CompilerInvocation.cpp DiagnosticsVerifier.cpp DiagnosticsVerifier.hpp)
+        CompilerInvocation.cpp DiagnosticsVerifier.cpp DiagnosticsVerifier.hpp
+        PylirMain.cpp)
 target_link_libraries(PylirMain
         PUBLIC Diagnostics ${llvm_options} MLIRPass
         PRIVATE

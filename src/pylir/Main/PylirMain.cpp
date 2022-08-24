@@ -17,10 +17,12 @@
 #include <pylir/Main/Opts.inc>
 #include <pylir/Optimizer/PylirPy/Transforms/Passes.hpp>
 #include <pylir/Optimizer/Transforms/Passes.hpp>
+#include <memory>
 
 #include "CommandLine.hpp"
 #include "CompilerInvocation.hpp"
 #include "DiagnosticsVerifier.hpp"
+#include "DarwinToolchain.hpp"
 #include "LinuxToolchain.hpp"
 #include "MSVCToolchain.hpp"
 #include "MinGWToolchain.hpp"
@@ -45,6 +47,10 @@ std::unique_ptr<pylir::Toolchain> createToolchainForTriple(const pylir::cli::Com
     if (triple.isOSLinux())
     {
         return std::make_unique<pylir::LinuxToolchain>(triple, commandLine);
+    }
+    if (triple.isOSDarwin())
+    {
+        return std::make_unique<pylir::DarwinToolchain>(triple, commandLine);
     }
     return {};
 }

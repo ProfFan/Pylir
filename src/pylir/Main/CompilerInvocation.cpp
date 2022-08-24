@@ -51,6 +51,7 @@
 #include <pylir/Optimizer/Transforms/Passes.hpp>
 #include <pylir/Parser/Dumper.hpp>
 #include <pylir/Parser/Parser.hpp>
+#include <iostream>
 
 using namespace pylir::cli;
 
@@ -508,6 +509,7 @@ mlir::LogicalResult pylir::CompilerInvocation::compilation(llvm::opt::Arg* input
                 return finalizeOutputStream(mlir::failure(), commandLine);
             }
 
+            commandLine.getArgs().dump();
             codeGenPasses.run(*llvmModule);
             break;
         }
