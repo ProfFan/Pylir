@@ -395,6 +395,10 @@ mlir::LogicalResult pylir::CompilerInvocation::compilation(llvm::opt::Arg* input
                 {
                     return mlir::failure();
                 }
+                if (llvmModule->getDataLayout().isDefault())
+                {
+                    llvmModule->setDataLayout(m_targetMachine->createDataLayout());
+                }
             }
 
             llvm::LoopAnalysisManager lam;
