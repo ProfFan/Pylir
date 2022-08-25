@@ -178,12 +178,6 @@ mlir::LLVM::LLVMFuncOp pylir::ARM64::declareFunc(mlir::OpBuilder& builder, mlir:
     mlir::Type retType = returnType;
     llvm::SmallVector<mlir::Type> argumentTypes;
 
-    std::cerr << "calling function " << name.str() << "\n";
-    if (name.contains("init")) {
-        std::cerr << "found init ";
-        loc->dump();
-    }
-
     if (!returnType.isa<mlir::LLVM::LLVMVoidType>())
     {
         auto size = getSizeOf(returnType);
@@ -211,14 +205,6 @@ mlir::LLVM::LLVMFuncOp pylir::ARM64::declareFunc(mlir::OpBuilder& builder, mlir:
                 adjustments.returnType = Flattened{};
             }
         }
-
-        if (size == 0) {
-            std::cerr << "zero size in ";
-            loc->dump();
-        }
-    } else {
-        std::cerr << "void type in ";
-        loc->dump();
     }
 
     std::uint8_t takenIntegerRegisters = 0;

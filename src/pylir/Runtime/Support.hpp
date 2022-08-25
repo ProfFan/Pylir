@@ -105,9 +105,7 @@ std::intptr_t readSLEB128(const std::uint8_t** data);
 #elifdef __APPLE__
 # define PYLIR_WEAK_VAR(variable, alternative) \
    variable __attribute__((weak)); \
-   __asm__(".globl _" #alternative); \
-   __asm__(".set _" #alternative ", _" #variable); \
-   extern __typeof(variable) alternative
+   __asm__(".set _" #variable ", _" #alternative)
 #else
     #define PYLIR_WEAK_VAR(variable, alternative) variable __attribute__((weak, alias(#alternative)))
 #endif

@@ -124,7 +124,7 @@ const char* getEmulation(const llvm::Triple& triple, const pylir::cli::CommandLi
 {
     switch (triple.getArch())
     {
-        case llvm::Triple::aarch64: return "macho_arm64";
+        case llvm::Triple::aarch64: return "arm64pe";
         default: return nullptr;
     }
 }
@@ -133,7 +133,7 @@ const char* getDynamicLinker(const llvm::Triple& triple, const pylir::cli::Comma
 {
     switch (triple.getArch())
     {
-        case llvm::Triple::aarch64: return "/lib64/ld-linux-x86-64.so.2";
+        case llvm::Triple::aarch64: return "/usr/bin/ld";
         default: return nullptr;
     }
 }
@@ -163,17 +163,17 @@ bool pylir::DarwinToolchain::link(cli::CommandLine& commandLine, llvm::StringRef
     }
 
     arguments.emplace_back("--eh-frame-hdr");
-    // const auto* emulation = getEmulation(m_triple, commandLine);
-    // if (!emulation)
-    // {
-    //     commandLine.createError("Missing emulation for target '{}'", m_triple.str());
-    //     return false;
-    // }
-    // arguments.emplace_back("-m");
-    // arguments.emplace_back(emulation);
+    const auto* emulation = getEmulation(m_triple, commandLine);
+    if (!emulation)
+    {
+        commandLine.createError("Missing emulation for target '{}'", m_triple.str());
+        return false;
+    }
+    arguments.emplace_back("-m");
+    arguments.emplace_back(emulation);
 
-    // arguments.emplace_back("-dynamic-linker");
-    // arguments.emplace_back(getDynamicLinker(m_triple, commandLine));
+    arguments.emplace_back("-dynamic-linker");
+    arguments.emplace_back(getDynamicLinker(m_triple, commandLine));
 
     for (auto& iter : getLLVMOptions(args))
     {
